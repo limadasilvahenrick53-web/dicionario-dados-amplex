@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dicionário de Dados &amp; Governança | AMPLEX</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-left">
+      <button id="sidebarToggle" class="icon-btn mobile-only" aria-label="Alternar menu lateral">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="brand">
+        <span class="brand-badge">AMPLEX</span>
+        <div class="brand-text">
+          <h1>Dicionário de Dados Corporativo</h1>
+          <span class="subtitle">Governança de Dados &amp; Catálogo de Metadados (DMBOK / COBIT)</span>
+        </div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <span class="schema-tag"><i class="fas fa-database"></i> Schema: controle_estoque</span>
+      <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema claro e escuro">
+        <i class="fas fa-moon" id="themeIcon"></i>
+        <span id="themeLabel">Modo Escuro</span>
+      </button>
+    </div>
+  </header>
+
+  <nav class="subnav">
+    <div class="subnav-inner">
+      <span><i class="fas fa-shield-halved"></i> Conformidade LGPD (Lei 13.709/2018)</span>
+      <span><i class="fas fa-layer-group"></i> Normalização 3FN</span>
+      <span><i class="fas fa-server"></i> MySQL Server 8.0 (InnoDB / utf8mb4)</span>
+      <span><i class="fas fa-user-graduate"></i> Orientação: Prof. Dr. Diego Carvalho</span>
+    </div>
+  </nav>
+
+  <div class="layout-wrapper">
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <h2>Entidades do Modelo</h2>
+        <span class="badge-count" id="tableCountBadge">11</span>
+      </div>
+      <ul id="sidebarMenu" class="sidebar-menu"></ul>
+      <div class="sidebar-footer">
+        <p><strong>Legenda LGPD:</strong></p>
+        <div class="legend-item"><span class="badge-lgpd badge-dps">[DPS]</span> Dado Pessoal Sensível</div>
+        <div class="legend-item"><span class="badge-lgpd badge-dp">[DP]</span> Dado Pessoal</div>
+        <div class="legend-item"><span class="badge-lgpd badge-na">[N/A]</span> Não Aplicável</div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <section class="project-info-card">
+        <div class="card-header-accent">
+          <h2>Identificação e Governança do Projeto</h2>
+        </div>
+        <div class="info-grid">
+          <div class="info-block">
+            <h3><i class="fas fa-bullseye"></i> 1. Escopo</h3>
+            <p>Modelagem relacional destinada ao controle centralizado de estoque de complementos automotivos da distribuidora <strong>AMPLEX</strong>. Abrange o catálogo de produtos e categorias, gestão de fornecedores, registros transacionais de entradas e saídas, inventários físicos periódicos, trilha imutável de movimentações e controle de acesso baseado em perfis.</p>
+          </div>
+          <div class="info-block">
+            <h3><i class="fas fa-microchip"></i> 2. Tecnologia</h3>
+            <p><strong>SGBD:</strong> MySQL Server 8.0</p>
+            <p><strong>Engine &amp; Charset:</strong> InnoDB / <code>utf8mb4_unicode_ci</code></p>
+            <p><strong>Frameworks de Governança:</strong> DAMA-DMBOK v2, COBIT 2019 e LGPD.</p>
+          </div>
+          <div class="info-block">
+            <h3><i class="fas fa-users-cog"></i> 3. Responsáveis (Data Owners &amp; Stewards)</h3>
+            <ul class="owners-list">
+              <li><strong>Daniel Martins Machado (RA: 763000):</strong> Líder do Grupo / Data Owner</li>
+              <li><strong>Jeferson Nascimento (RA: 762496):</strong> Analista de Requisitos / Data Steward</li>
+              <li><strong>Henrick Lima (RA: 762614):</strong> Analista de Requisitos / Data Steward</li>
+              <li><strong>David Delmano (RA: 761000):</strong> Representante do Negócio / Data Owner</li>
+              <li><strong>Prof. Dr. Diego Carvalho:</strong> Professor Orientador</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="control-panel">
+        <div class="action-buttons">
+          <a href="docs/Especificacao_Requisitos_Regras_Negocio_BD.pdf" download class="btn btn-primary">
+            <i class="fas fa-file-pdf"></i> Baixar Especificação de Requisitos (PDF)
+          </a>
+          <button id="openDerModalBtn" class="btn btn-secondary">
+            <i class="fas fa-project-diagram"></i> Visualizar DER (Zoom Interativo)
+          </button>
+          <button id="openDdlModalBtn" class="btn btn-accent">
+            <i class="fas fa-code"></i> Abrir Script DDL (SQL)
+          </button>
+        </div>
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" id="searchInput" placeholder="Filtrar por nome da tabela, atributo, constraint ou descrição..." autocomplete="off">
+          <button id="clearSearchBtn" class="clear-search" title="Limpar filtro" hidden>&times;</button>
+        </div>
+      </section>
+
+      <div id="filterStatus" class="filter-status" hidden></div>
+
+      <div id="dictionaryContainer" class="dictionary-container">
+
+        <!-- TABELA 1: usuario -->
+        <section id="usuario" class="table-section" data-table-name="usuario">
+          <div class="table-section-header">
+            <div>
+              <span class="table-domain-tag">Segurança &amp; Identidade</span>
+              <h3>Tabela: <code>usuario</code></h3>
+            </div>
+            <span class="column-counter">6 atributos</span>
+          </div>
+          <p class="table-description">Armazena os operadores autorizados a acessar o sistema de controle de estoque da Amplex, definindo credenciais autenticadas e perfis de permissão operacional.</p>
+          <div class="table-responsive">
+            <table class="dict-table">
+              <thead>
+                <tr>
+                  <th>Atributo</th>
+                  <th>Descrição / Regra de Negócio</th>
+                  <th>Tipo e Tamanho</th>
+                  <th>Constraints</th>
+                  <th>Privacidade (LGPD)</th>
+                  <th>Linhagem (Data Lineage)</th>
+                  <th>Controle de Acesso (RBAC)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>id_usuario</code></td>
+                  <td>Identificador único sequencial do usuário no sistema.</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[PK]</strong> <strong>[NOT NULL]</strong> <strong>[AUTO_INCREMENT]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Gerado pelo SGBD (MySQL). Destino: FKs em <code>entrada_estoque</code>, <code>saida_estoque</code>, <code>inventario</code> e <code>movimentacao_estoque</code>.</td>
+                  <td>Leitura: Todos os perfis autenticados. Escrita: Sistema (Interno).</td>
+                </tr>
+                <tr>
+                  <td><code>nome</code></td>
+                  <td>Nome completo do colaborador operador do sistema (RN11).</td>
+                  <td><code>VARCHAR(100)</code></td>
+                  <td><strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-dp">[DP]</span></td>
+                  <td>Origem: Cadastro administrativo (RH/Gestor). Destino: Relatórios de auditoria operacional.</td>
+                  <td>Leitura: ADMIN, OPERADOR. Escrita: ADMIN.</td>
+                </tr>
+                <tr>
+                  <td><code>login</code></td>
+                  <td>Identificador de acesso único do usuário para autenticação (RN11).</td>
+                  <td><code>VARCHAR(50)</code></td>
+                  <td><strong>[NOT NULL]</strong> <strong>[UNIQUE]</strong></td>
+                  <td><span class="badge-lgpd badge-dp">[DP]</span></td>
+                  <td>Origem: Cadastro de usuários (RF11). Destino: Módulo de autenticação e logs de sessão.</td>
+                  <td>Leitura: ADMIN. Escrita: ADMIN.</td>
+                </tr>
+                <tr>
+                  <td><code>senha_hash</code></td>
+                  <td>Representação criptografada (hash seguro) da senha de acesso do usuário (RNF01).</td>
+                  <td><code>VARCHAR(255)</code></td>
+                  <td><strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-dps">[DPS]</span></td>
+                  <td>Origem: Aplicação (algoritmo de hash na camada de serviço). Destino: Validação de login (nunca exposto em relatórios).</td>
+                  <td>Leitura: Apenas Serviço de Autenticação. Escrita: ADMIN / Próprio Usuário.</td>
+                </tr>
+                <tr>
+                  <td><code>perfil</code></td>
+                  <td>Papel funcional que restringe as operações permitidas no sistema: <code>ADMIN</code>, <code>OPERADOR</code> ou <code>ESTOQUISTA</code> (RNF01).</td>
+                  <td><code>ENUM('ADMIN', 'OPERADOR', 'ESTOQUISTA')</code></td>
+                  <td><strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Definição administrativa (RF11). Destino: Middleware de autorização RBAC.</td>
+                  <td>Leitura: ADMIN, Sistema. Escrita: ADMIN.</td>
+                </tr>
+                <tr>
+                  <td><code>ativo</code></td>
+                  <td>Indicador de exclusão lógica (<code>1</code> = Ativo, <code>0</code> = Inativo). Usuários com histórico não são excluídos fisicamente (RN12).</td>
+                  <td><code>TINYINT(1)</code></td>
+                  <td><strong>[NOT NULL]</strong> <strong>[DEFAULT 1]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Gestão de usuários (RF11). Destino: Validação de permissão para novas movimentações (RN11).</td>
+                  <td>Leitura: ADMIN. Escrita: ADMIN.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- TABELA 2: fornecedor -->
+        <section id="fornecedor" class="table-section" data-table-name="fornecedor">
+          <div class="table-section-header">
+            <div>
+              <span class="table-domain-tag">Cadeia de Suprimentos</span>
+              <h3>Tabela: <code>fornecedor</code></h3>
+            </div>
+            <span class="column-counter">7 atributos</span>
+          </div>
+          <p class="table-description">Cadastro mestre das empresas fornecedoras de complementos automotivos que abastecem o estoque da Amplex.</p>
+          <div class="table-responsive">
+            <table class="dict-table">
+              <thead>
+                <tr>
+                  <th>Atributo</th>
+                  <th>Descrição / Regra de Negócio</th>
+                  <th>Tipo e Tamanho</th>
+                  <th>Constraints</th>
+                  <th>Privacidade (LGPD)</th>
+                  <th>Linhagem (Data Lineage)</th>
+                  <th>Controle de Acesso (RBAC)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>id_fornecedor</code></td>
+                  <td>Identificador único sequencial do fornecedor.</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[PK]</strong> <strong>[NOT NULL]</strong> <strong>[AUTO_INCREMENT]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Gerado pelo SGBD (MySQL). Destino: FK em <code>entrada_estoque</code>.</td>
+                  <td>Leitura: ADMIN, OPERADOR, ESTOQUISTA. Escrita: Sistema.</td>
+                </tr>
+                <tr>
+                  <td><code>razao_social</code></td>
+                  <td>Nome empresarial oficial registrado na Receita Federal.</td>
+                  <td><code>VARCHAR(150)</code></td>
+                  <td><strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Cadastro de fornecedores / Nota Fiscal (RF03). Destino: Relatórios de compras e entradas.</td>
+                  <td>Leitura: ADMIN, OPERADOR, ESTOQUISTA. Escrita: ADMIN, OPERADOR.</td>
+                </tr>
+                <tr>
+                  <td><code>nome_fantasia</code></td>
+                  <td>Nome comercial pelo qual o fornecedor é conhecido no mercado automotivo.</td>
+                  <td><code>VARCHAR(150)</code></td>
+                  <td><strong>[NULL]</strong> <strong>[DEFAULT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Cadastro de fornecedores (RF03). Destino: Telas de consulta rápida de recebimento.</td>
+                  <td>Leitura: ADMIN, OPERADOR, ESTOQUISTA. Escrita: ADMIN, OPERADOR.</td>
+                </tr>
+                <tr>
+                  <td><code>cnpj</code></td>
+                  <td>Cadastro Nacional da Pessoa Jurídica único do fornecedor (RN03).</td>
+                  <td><code>VARCHAR(20)</code></td>
+                  <td><strong>[NOT NULL]</strong> <strong>[UNIQUE]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Documentação fiscal do fornecedor (RF03). Destino: Conferência fiscal de entradas (PR03).</td>
+                  <td>Leitura: ADMIN, OPERADOR. Escrita: ADMIN, OPERADOR.</td>
+                </tr>
+                <tr>
+                  <td><code>telefone</code></td>
+                  <td>Telefone comercial ou de contato do representante do fornecedor (PR02).</td>
+                  <td><code>VARCHAR(20)</code></td>
+                  <td><strong>[NULL]</strong> <strong>[DEFAULT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-dp">[DP]</span></td>
+                  <td>Origem: Cadastro de fornecedores (RF03). Destino: Setor de Compras / Reposição.</td>
+                  <td>Leitura: ADMIN, OPERADOR. Escrita: ADMIN, OPERADOR.</td>
+                </tr>
+                <tr>
+                  <td><code>email</code></td>
+                  <td>Endereço de correio eletrônico comercial ou do ponto focal do fornecedor (PR02).</td>
+                  <td><code>VARCHAR(150)</code></td>
+                  <td><strong>[NULL]</strong> <strong>[DEFAULT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-dp">[DP]</span></td>
+                  <td>Origem: Cadastro de fornecedores (RF03). Destino: Comunicação de pedidos e cotações.</td>
+                  <td>Leitura: ADMIN, OPERADOR. Escrita: ADMIN, OPERADOR.</td>
+                </tr>
+                <tr>
+                  <td><code>ativo</code></td>
+                  <td>Indicador de exclusão lógica (<code>1</code> = Ativo, <code>0</code> = Inativo). Fornecedor com histórico de entradas não pode ser excluído fisicamente (RN12).</td>
+                  <td><code>TINYINT(1)</code></td>
+                  <td><strong>[NOT NULL]</strong> <strong>[DEFAULT 1]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Gestão de fornecedores (RF03). Destino: Filtro de fornecedores aptos para nova entrada.</td>
+                  <td>Leitura: ADMIN, OPERADOR, ESTOQUISTA. Escrita: ADMIN, OPERADOR.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- TABELA 3: categoria -->
+        <section id="categoria" class="table-section" data-table-name="categoria">
+          <div class="table-section-header">
+            <div>
+              <span class="table-domain-tag">Catálogo &amp; Taxonomia</span>
+              <h3>Tabela: <code>categoria</code></h3>
+            </div>
+            <span class="column-counter">4 atributos</span>
+          </div>
+          <p class="table-description">Agrupamento lógico dos complementos automotivos (ex.: iluminação, som, acessórios externos) para organização e relatórios gerenciais.</p>
+          <div class="table-responsive">
+            <table class="dict-table">
+              <thead>
+                <tr>
+                  <th>Atributo</th>
+                  <th>Descrição / Regra de Negócio</th>
+                  <th>Tipo e Tamanho</th>
+                  <th>Constraints</th>
+                  <th>Privacidade (LGPD)</th>
+                  <th>Linhagem (Data Lineage)</th>
+                  <th>Controle de Acesso (RBAC)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>id_categoria</code></td>
+                  <td>Identificador único sequencial da categoria de produtos.</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[PK]</strong> <strong>[NOT NULL]</strong> <strong>[AUTO_INCREMENT]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Gerado pelo SGBD (MySQL). Destino: FK obrigatória em <code>produto</code>.</td>
+                  <td>Leitura: Todos os perfis. Escrita: Sistema.</td>
+                </tr>
+                <tr>
+                  <td><code>nome</code></td>
+                  <td>Nome único da categoria de complementos automotivos (RF02).</td>
+                  <td><code>VARCHAR(100)</code></td>
+                  <td><strong>[NOT NULL]</strong> <strong>[UNIQUE]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Cadastro de categorias (RF02). Destino: Filtros de busca e relatórios gerenciais (RF10).</td>
+                  <td>Leitura: Todos os perfis. Escrita: ADMIN, OPERADOR.</td>
+                </tr>
+                <tr>
+                  <td><code>descricao</code></td>
+                  <td>Detalhamento textual dos tipos de peças e acessórios pertencentes à categoria.</td>
+                  <td><code>TEXT</code></td>
+                  <td><strong>[NULL]</strong> <strong>[DEFAULT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Cadastro de categorias (RF02). Destino: Consulta de catálogo.</td>
+                  <td>Leitura: Todos os perfis. Escrita: ADMIN, OPERADOR.</td>
+                </tr>
+                <tr>
+                  <td><code>ativo</code></td>
+                  <td>Indicador de situação cadastral da categoria (<code>1</code> = Ativa, <code>0</code> = Inativa). Produtos devem ser vinculados a categorias ativas (RN02).</td>
+                  <td><code>TINYINT(1)</code></td>
+                  <td><strong>[NOT NULL]</strong> <strong>[DEFAULT 1]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Gestão de categorias (RF02). Destino: Validação no cadastro de <code>produto</code>.</td>
+                  <td>Leitura: Todos os perfis. Escrita: ADMIN, OPERADOR.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- TABELA 4: produto -->
+        <section id="produto" class="table-section" data-table-name="produto">
+          <div class="table-section-header">
+            <div>
+              <span class="table-domain-tag">Catálogo &amp; Saldo Operacional</span>
+              <h3>Tabela: <code>produto</code></h3>
+            </div>
+            <span class="column-counter">11 atributos</span>
+          </div>
+          <p class="table-description">Entidade central do catálogo de complementos automotivos da Amplex, contendo identificação SKU, precificação, parâmetros de reposição e saldo atual consolidado.</p>
+          <div class="table-responsive">
+            <table class="dict-table">
+              <thead>
+                <tr>
+                  <th>Atributo</th>
+                  <th>Descrição / Regra de Negócio</th>
+                  <th>Tipo e Tamanho</th>
+                  <th>Constraints</th>
+                  <th>Privacidade (LGPD)</th>
+                  <th>Linhagem (Data Lineage)</th>
+                  <th>Controle de Acesso (RBAC)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>id_produto</code></td>
+                  <td>Identificador único sequencial do produto no banco de dados.</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[PK]</strong> <strong>[NOT NULL]</strong> <strong>[AUTO_INCREMENT]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Gerado pelo SGBD (MySQL). Destino: FKs em <code>item_entrada</code>, <code>item_saida</code>, <code>item_inventario</code> e <code>movimentacao_estoque</code>.</td>
+                  <td>Leitura: Todos os perfis. Escrita: Sistema.</td>
+                </tr>
+                <tr>
+                  <td><code>id_categoria</code></td>
+                  <td>Chave estrangeira que associa o produto a uma categoria ativa (RN02).</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[FK]</strong> <strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: <code>categoria.id_categoria</code>. Destino: Classificação e agrupamento de estoque.</td>
+                  <td>Leitura: Todos os perfis. Escrita: ADMIN, OPERADOR.</td>
+                </tr>
+                <tr>
+                  <td><code>sku</code></td>
+                  <td>Código alfanumérico único de manutenção de estoque (Stock Keeping Unit) no catálogo (RN01).</td>
+                  <td><code>VARCHAR(50)</code></td>
+                  <td><strong>[NOT NULL]</strong> <strong>[UNIQUE]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Cadastro de produtos (RF01). Destino: Leitura rápida no balcão/almoxarifado (RNF04).</td>
+                  <td>Leitura: Todos os perfis. Escrita: ADMIN, OPERADOR.</td>
+                </tr>
+                <tr>
+                  <td><code>descricao</code></td>
+                  <td>Descrição técnica e comercial do complemento automotivo (RN02).</td>
+                  <td><code>VARCHAR(150)</code></td>
+                  <td><strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Cadastro de produtos (RF01). Destino: Telas de consulta, pedidos e relatórios.</td>
+                  <td>Leitura: Todos os perfis. Escrita: ADMIN, OPERADOR.</td>
+                </tr>
+                <tr>
+                  <td><code>marca</code></td>
+                  <td>Fabricante ou marca comercial do complemento automotivo.</td>
+                  <td><code>VARCHAR(100)</code></td>
+                  <td><strong>[NULL]</strong> <strong>[DEFAULT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Cadastro de produtos (RF01). Destino: Catálogo e filtros de consulta.</td>
+                  <td>Leitura: Todos os perfis. Escrita: ADMIN, OPERADOR.</td>
+                </tr>
+                <tr>
+                  <td><code>unidade</code></td>
+                  <td>Unidade de medida de controle do item (ex.: UN, PAR, KIT, CX) (RN02).</td>
+                  <td><code>VARCHAR(20)</code></td>
+                  <td><strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Cadastro de produtos (RF01). Destino: Conferência de entrada, saída e contagem física.</td>
+                  <td>Leitura: Todos os perfis. Escrita: ADMIN, OPERADOR.</td>
+                </tr>
+                <tr>
+                  <td><code>preco_custo</code></td>
+                  <td>Valor unitário de aquisição do produto junto aos fornecedores; deve ser maior ou igual a zero (RN02).</td>
+                  <td><code>DECIMAL(10,2)</code></td>
+                  <td><strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Cadastro inicial / última entrada de mercadoria. Destino: Valoração financeira de estoque.</td>
+                  <td>Leitura: ADMIN, OPERADOR. Escrita: ADMIN, OPERADOR.</td>
+                </tr>
+                <tr>
+                  <td><code>preco_venda</code></td>
+                  <td>Valor unitário praticado na comercialização do produto; deve ser maior ou igual a zero (RN02).</td>
+                  <td><code>DECIMAL(10,2)</code></td>
+                  <td><strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Cadastro de produtos / Tabela comercial (RF01). Destino: Consulta de catálogo e margem.</td>
+                  <td>Leitura: Todos os perfis. Escrita: ADMIN, OPERADOR.</td>
+                </tr>
+                <tr>
+                  <td><code>saldo_estoque</code></td>
+                  <td>Quantidade física disponível em estoque no momento atual; não pode ser negativo (RN05).</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[NOT NULL]</strong> <strong>[DEFAULT 0]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Atualizado transacionalmente por <code>entrada_estoque</code>, <code>saida_estoque</code> e <code>inventario</code>. Destino: Consulta de disponibilidade e alerta de reposição.</td>
+                  <td>Leitura: Todos os perfis. Escrita: Exclusivo via Transação/Procedure do BD.</td>
+                </tr>
+                <tr>
+                  <td><code>estoque_minimo</code></td>
+                  <td>Limite mínimo de segurança que dispara o alerta de necessidade de reposição quando <code>saldo_estoque &lt;= estoque_minimo</code> (RN08).</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[NOT NULL]</strong> <strong>[DEFAULT 0]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Parâmetro definido pelo Gestor/Compras (RF01). Destino: Relatório de alerta de reposição (RF07).</td>
+                  <td>Leitura: Todos os perfis. Escrita: ADMIN, OPERADOR.</td>
+                </tr>
+                <tr>
+                  <td><code>ativo</code></td>
+                  <td>Indicador de exclusão lógica (<code>1</code> = Ativo, <code>0</code> = Inativo). Produtos com histórico não podem ser apagados fisicamente (RN12).</td>
+                  <td><code>TINYINT(1)</code></td>
+                  <td><strong>[NOT NULL]</strong> <strong>[DEFAULT 1]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Gestão de catálogo (RF01). Destino: Bloqueio de movimentações em itens descontinuados.</td>
+                  <td>Leitura: Todos os perfis. Escrita: ADMIN, OPERADOR.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- TABELA 5: entrada_estoque -->
+        <section id="entrada_estoque" class="table-section" data-table-name="entrada_estoque">
+          <div class="table-section-header">
+            <div>
+              <span class="table-domain-tag">Movimentação de Recebimento</span>
+              <h3>Tabela: <code>entrada_estoque</code></h3>
+            </div>
+            <span class="column-counter">6 atributos</span>
+          </div>
+          <p class="table-description">Cabeçalho operacional dos documentos de recebimento de mercadorias enviadas por fornecedores para o estoque da Amplex.</p>
+          <div class="table-responsive">
+            <table class="dict-table">
+              <thead>
+                <tr>
+                  <th>Atributo</th>
+                  <th>Descrição / Regra de Negócio</th>
+                  <th>Tipo e Tamanho</th>
+                  <th>Constraints</th>
+                  <th>Privacidade (LGPD)</th>
+                  <th>Linhagem (Data Lineage)</th>
+                  <th>Controle de Acesso (RBAC)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>id_entrada</code></td>
+                  <td>Identificador único sequencial do registro de entrada de estoque.</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[PK]</strong> <strong>[NOT NULL]</strong> <strong>[AUTO_INCREMENT]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Gerado pelo SGBD (MySQL). Destino: FK em <code>item_entrada</code> e referência em <code>movimentacao_estoque.origem</code>.</td>
+                  <td>Leitura: ADMIN, OPERADOR, ESTOQUISTA. Escrita: Sistema.</td>
+                </tr>
+                <tr>
+                  <td><code>id_fornecedor</code></td>
+                  <td>Identificador do fornecedor emissor das mercadorias recebidas (PR03).</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[FK]</strong> <strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: <code>fornecedor.id_fornecedor</code>. Destino: Rastreabilidade de compras e recebimentos.</td>
+                  <td>Leitura: ADMIN, OPERADOR, ESTOQUISTA. Escrita: ADMIN, OPERADOR, ESTOQUISTA.</td>
+                </tr>
+                <tr>
+                  <td><code>id_usuario</code></td>
+                  <td>Identificador do usuário ativo responsável pelo lançamento da entrada (RN11).</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[FK]</strong> <strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: <code>usuario.id_usuario</code> (sessão autenticada). Destino: Trilha de auditoria (RNF08).</td>
+                  <td>Leitura: ADMIN, OPERADOR. Escrita: Sistema (Sessão Autenticada).</td>
+                </tr>
+                <tr>
+                  <td><code>data_entrada</code></td>
+                  <td>Data e hora do registro da entrada geradas automaticamente pelo servidor de banco de dados.</td>
+                  <td><code>DATETIME</code></td>
+                  <td><strong>[NOT NULL]</strong> <strong>[DEFAULT CURRENT_TIMESTAMP]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Relógio do servidor MySQL. Destino: Relatórios cronológicos de recebimento.</td>
+                  <td>Leitura: ADMIN, OPERADOR, ESTOQUISTA. Escrita: Sistema (Automático).</td>
+                </tr>
+                <tr>
+                  <td><code>numero_documento</code></td>
+                  <td>Número da Nota Fiscal, romaneio ou documento de controle que acompanha a carga (PR03).</td>
+                  <td><code>VARCHAR(50)</code></td>
+                  <td><strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Documento fiscal físico/eletrônico do fornecedor (RF04). Destino: Conferência administrativa e auditoria.</td>
+                  <td>Leitura: ADMIN, OPERADOR, ESTOQUISTA. Escrita: ADMIN, OPERADOR, ESTOQUISTA.</td>
+                </tr>
+                <tr>
+                  <td><code>situacao</code></td>
+                  <td>Estado do ciclo de vida do recebimento: <code>ABERTA</code>, <code>CONCLUIDA</code> ou <code>CANCELADA</code>. Somente <code>CONCLUIDA</code> efetiva saldo (RN04).</td>
+                  <td><code>ENUM('ABERTA', 'CONCLUIDA', 'CANCELADA')</code></td>
+                  <td><strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Fluxo operacional de recebimento (RF04). Destino: Gatilho transacional de atualização de saldo.</td>
+                  <td>Leitura: ADMIN, OPERADOR, ESTOQUISTA. Escrita: ADMIN, OPERADOR, ESTOQUISTA.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- TABELA 6: item_entrada -->
+        <section id="item_entrada" class="table-section" data-table-name="item_entrada">
+          <div class="table-section-header">
+            <div>
+              <span class="table-domain-tag">Movimentação de Recebimento</span>
+              <h3>Tabela: <code>item_entrada</code></h3>
+            </div>
+            <span class="column-counter">5 atributos</span>
+          </div>
+          <p class="table-description">Detalhamento analítico dos produtos, quantidades e custos unitários vinculados a cada documento de entrada de estoque.</p>
+          <div class="table-responsive">
+            <table class="dict-table">
+              <thead>
+                <tr>
+                  <th>Atributo</th>
+                  <th>Descrição / Regra de Negócio</th>
+                  <th>Tipo e Tamanho</th>
+                  <th>Constraints</th>
+                  <th>Privacidade (LGPD)</th>
+                  <th>Linhagem (Data Lineage)</th>
+                  <th>Controle de Acesso (RBAC)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>id_item_entrada</code></td>
+                  <td>Identificador único sequencial da linha de item da entrada.</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[PK]</strong> <strong>[NOT NULL]</strong> <strong>[AUTO_INCREMENT]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Gerado pelo SGBD (MySQL). Destino: Chave interna de controle do documento.</td>
+                  <td>Leitura: ADMIN, OPERADOR, ESTOQUISTA. Escrita: Sistema.</td>
+                </tr>
+                <tr>
+                  <td><code>id_entrada</code></td>
+                  <td>Referência ao cabeçalho da entrada de estoque correspondente.</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[FK]</strong> <strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: <code>entrada_estoque.id_entrada</code>. Destino: Composição do documento de recebimento.</td>
+                  <td>Leitura: ADMIN, OPERADOR, ESTOQUISTA. Escrita: ADMIN, OPERADOR, ESTOQUISTA.</td>
+                </tr>
+                <tr>
+                  <td><code>id_produto</code></td>
+                  <td>Referência ao produto recebido no estoque.</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[FK]</strong> <strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: <code>produto.id_produto</code>. Destino: Atualização de <code>produto.saldo_estoque</code>.</td>
+                  <td>Leitura: ADMIN, OPERADOR, ESTOQUISTA. Escrita: ADMIN, OPERADOR, ESTOQUISTA.</td>
+                </tr>
+                <tr>
+                  <td><code>quantidade</code></td>
+                  <td>Quantidade física recebida do produto; deve ser estritamente maior que zero (RN07).</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Conferência física de recebimento (RF04). Destino: Acréscimo em <code>produto.saldo_estoque</code> e registro em <code>movimentacao_estoque</code>.</td>
+                  <td>Leitura: ADMIN, OPERADOR, ESTOQUISTA. Escrita: ADMIN, OPERADOR, ESTOQUISTA.</td>
+                </tr>
+                <tr>
+                  <td><code>custo_unitario</code></td>
+                  <td>Custo unitário de aquisição registrado no documento de entrada; deve ser maior ou igual a zero.</td>
+                  <td><code>DECIMAL(10,2)</code></td>
+                  <td><strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Nota Fiscal / Pedido de compra (RF04). Destino: Histórico de custos e atualização de <code>produto.preco_custo</code>.</td>
+                  <td>Leitura: ADMIN, OPERADOR. Escrita: ADMIN, OPERADOR.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- TABELA 7: saida_estoque -->
+        <section id="saida_estoque" class="table-section" data-table-name="saida_estoque">
+          <div class="table-section-header">
+            <div>
+              <span class="table-domain-tag">Movimentação de Expedição</span>
+              <h3>Tabela: <code>saida_estoque</code></h3>
+            </div>
+            <span class="column-counter">5 atributos</span>
+          </div>
+          <p class="table-description">Cabeçalho operacional das retiradas e baixas de produtos do estoque por venda, consumo interno ou transferência autorizada.</p>
+          <div class="table-responsive">
+            <table class="dict-table">
+              <thead>
+                <tr>
+                  <th>Atributo</th>
+                  <th>Descrição / Regra de Negócio</th>
+                  <th>Tipo e Tamanho</th>
+                  <th>Constraints</th>
+                  <th>Privacidade (LGPD)</th>
+                  <th>Linhagem (Data Lineage)</th>
+                  <th>Controle de Acesso (RBAC)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>id_saida</code></td>
+                  <td>Identificador único sequencial do registro de saída de estoque.</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[PK]</strong> <strong>[NOT NULL]</strong> <strong>[AUTO_INCREMENT]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Gerado pelo SGBD (MySQL). Destino: FK em <code>item_saida</code> e referência em <code>movimentacao_estoque.origem</code>.</td>
+                  <td>Leitura: ADMIN, OPERADOR, ESTOQUISTA. Escrita: Sistema.</td>
+                </tr>
+                <tr>
+                  <td><code>id_usuario</code></td>
+                  <td>Identificador do usuário ativo que autorizou/registrou a retirada (RN11).</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[FK]</strong> <strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: <code>usuario.id_usuario</code> (sessão autenticada). Destino: Auditoria de operações de saída (RNF08).</td>
+                  <td>Leitura: ADMIN, OPERADOR. Escrita: Sistema (Sessão Autenticada).</td>
+                </tr>
+                <tr>
+                  <td><code>data_saida</code></td>
+                  <td>Data e hora da operação de saída geradas automaticamente pelo servidor.</td>
+                  <td><code>DATETIME</code></td>
+                  <td><strong>[NOT NULL]</strong> <strong>[DEFAULT CURRENT_TIMESTAMP]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Relógio do servidor MySQL. Destino: Relatórios de giro e expedição por período.</td>
+                  <td>Leitura: ADMIN, OPERADOR, ESTOQUISTA. Escrita: Sistema (Automático).</td>
+                </tr>
+                <tr>
+                  <td><code>motivo</code></td>
+                  <td>Justificativa ou finalidade operacional da baixa de estoque (ex.: venda balcão, consumo interno, transferência) (RF05).</td>
+                  <td><code>VARCHAR(255)</code></td>
+                  <td><strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Preenchimento do operador na tela de saída (RF05). Destino: Auditoria operacional.</td>
+                  <td>Leitura: ADMIN, OPERADOR, ESTOQUISTA. Escrita: ADMIN, OPERADOR, ESTOQUISTA.</td>
+                </tr>
+                <tr>
+                  <td><code>situacao</code></td>
+                  <td>Estado da requisição de saída: <code>ABERTA</code>, <code>CONCLUIDA</code> ou <code>CANCELADA</code>. Somente <code>CONCLUIDA</code> efetiva baixa de saldo (RN05).</td>
+                  <td><code>ENUM('ABERTA', 'CONCLUIDA', 'CANCELADA')</code></td>
+                  <td><strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Fluxo operacional de expedição (RF05). Destino: Validação de saldo e baixa transacional.</td>
+                  <td>Leitura: ADMIN, OPERADOR, ESTOQUISTA. Escrita: ADMIN, OPERADOR, ESTOQUISTA.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- TABELA 8: item_saida -->
+        <section id="item_saida" class="table-section" data-table-name="item_saida">
+          <div class="table-section-header">
+            <div>
+              <span class="table-domain-tag">Movimentação de Expedição</span>
+              <h3>Tabela: <code>item_saida</code></h3>
+            </div>
+            <span class="column-counter">4 atributos</span>
+          </div>
+          <p class="table-description">Detalhamento dos produtos e quantidades retirados em cada operação de saída de estoque.</p>
+          <div class="table-responsive">
+            <table class="dict-table">
+              <thead>
+                <tr>
+                  <th>Atributo</th>
+                  <th>Descrição / Regra de Negócio</th>
+                  <th>Tipo e Tamanho</th>
+                  <th>Constraints</th>
+                  <th>Privacidade (LGPD)</th>
+                  <th>Linhagem (Data Lineage)</th>
+                  <th>Controle de Acesso (RBAC)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>id_item_saida</code></td>
+                  <td>Identificador único sequencial da linha de item da saída.</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[PK]</strong> <strong>[NOT NULL]</strong> <strong>[AUTO_INCREMENT]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Gerado pelo SGBD (MySQL). Destino: Chave interna de controle do documento de saída.</td>
+                  <td>Leitura: ADMIN, OPERADOR, ESTOQUISTA. Escrita: Sistema.</td>
+                </tr>
+                <tr>
+                  <td><code>id_saida</code></td>
+                  <td>Referência ao cabeçalho da saída de estoque correspondente.</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[FK]</strong> <strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: <code>saida_estoque.id_saida</code>. Destino: Composição do documento de saída.</td>
+                  <td>Leitura: ADMIN, OPERADOR, ESTOQUISTA. Escrita: ADMIN, OPERADOR, ESTOQUISTA.</td>
+                </tr>
+                <tr>
+                  <td><code>id_produto</code></td>
+                  <td>Referência ao produto retirado do estoque.</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[FK]</strong> <strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: <code>produto.id_produto</code>. Destino: Dedução de <code>produto.saldo_estoque</code>.</td>
+                  <td>Leitura: ADMIN, OPERADOR, ESTOQUISTA. Escrita: ADMIN, OPERADOR, ESTOQUISTA.</td>
+                </tr>
+                <tr>
+                  <td><code>quantidade</code></td>
+                  <td>Quantidade solicitada para retirada; deve ser maior que zero (RN07) e menor ou igual a <code>produto.saldo_estoque</code> (RN05).</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Requisição de saída (RF05). Destino: Subtração em <code>produto.saldo_estoque</code> e registro em <code>movimentacao_estoque</code>.</td>
+                  <td>Leitura: ADMIN, OPERADOR, ESTOQUISTA. Escrita: ADMIN, OPERADOR, ESTOQUISTA.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- TABELA 9: inventario -->
+        <section id="inventario" class="table-section" data-table-name="inventario">
+          <div class="table-section-header">
+            <div>
+              <span class="table-domain-tag">Auditoria &amp; Acuracidade Física</span>
+              <h3>Tabela: <code>inventario</code></h3>
+            </div>
+            <span class="column-counter">5 atributos</span>
+          </div>
+          <p class="table-description">Cabeçalho dos processos de contagem física e auditoria periódica do estoque para reconciliação de divergências sem perda de histórico.</p>
+          <div class="table-responsive">
+            <table class="dict-table">
+              <thead>
+                <tr>
+                  <th>Atributo</th>
+                  <th>Descrição / Regra de Negócio</th>
+                  <th>Tipo e Tamanho</th>
+                  <th>Constraints</th>
+                  <th>Privacidade (LGPD)</th>
+                  <th>Linhagem (Data Lineage)</th>
+                  <th>Controle de Acesso (RBAC)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>id_inventario</code></td>
+                  <td>Identificador único sequencial do evento de inventário físico.</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[PK]</strong> <strong>[NOT NULL]</strong> <strong>[AUTO_INCREMENT]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Gerado pelo SGBD (MySQL). Destino: FK em <code>item_inventario</code> e referência em <code>movimentacao_estoque.origem</code>.</td>
+                  <td>Leitura: ADMIN, OPERADOR, ESTOQUISTA. Escrita: Sistema.</td>
+                </tr>
+                <tr>
+                  <td><code>id_usuario</code></td>
+                  <td>Identificador do usuário ativo responsável pela abertura e condução do inventário (RN11).</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[FK]</strong> <strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: <code>usuario.id_usuario</code>. Destino: Auditoria de responsabilidade sobre ajustes (RN09).</td>
+                  <td>Leitura: ADMIN, OPERADOR. Escrita: Sistema (Sessão Autenticada).</td>
+                </tr>
+                <tr>
+                  <td><code>data_inventario</code></td>
+                  <td>Data e hora de abertura do processo de inventário.</td>
+                  <td><code>DATETIME</code></td>
+                  <td><strong>[NOT NULL]</strong> <strong>[DEFAULT CURRENT_TIMESTAMP]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Relógio do servidor MySQL. Destino: Cronograma de acuracidade e relatórios gerenciais.</td>
+                  <td>Leitura: ADMIN, OPERADOR, ESTOQUISTA. Escrita: Sistema (Automático).</td>
+                </tr>
+                <tr>
+                  <td><code>observacao</code></td>
+                  <td>Justificativa detalhada da contagem, avarias, perdas ou motivo do ajuste de inventário (RF09, RN09).</td>
+                  <td><code>TEXT</code></td>
+                  <td><strong>[NULL]</strong> <strong>[DEFAULT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Registro do Gerente/Estoquista (RF09). Destino: Documentação de auditoria de perdas e sobras.</td>
+                  <td>Leitura: ADMIN, OPERADOR, ESTOQUISTA. Escrita: ADMIN, OPERADOR, ESTOQUISTA.</td>
+                </tr>
+                <tr>
+                  <td><code>situacao</code></td>
+                  <td>Estado da contagem física: <code>EM_ANDAMENTO</code>, <code>CONCLUIDO</code> ou <code>CANCELADO</code>. Ao concluir, dispara ajustes de saldo (RN10).</td>
+                  <td><code>ENUM('EM_ANDAMENTO', 'CONCLUIDO', 'CANCELADO')</code></td>
+                  <td><strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Fluxo de inventário (RF09). Destino: Procedure de ajuste de saldo e geração de <code>movimentacao_estoque</code>.</td>
+                  <td>Leitura: ADMIN, OPERADOR, ESTOQUISTA. Escrita: ADMIN, OPERADOR.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- TABELA 10: item_inventario -->
+        <section id="item_inventario" class="table-section" data-table-name="item_inventario">
+          <div class="table-section-header">
+            <div>
+              <span class="table-domain-tag">Auditoria &amp; Acuracidade Física</span>
+              <h3>Tabela: <code>item_inventario</code></h3>
+            </div>
+            <span class="column-counter">6 atributos</span>
+          </div>
+          <p class="table-description">Registro individual por produto durante um inventário, confrontando o saldo lógico do sistema com a contagem física apurada.</p>
+          <div class="table-responsive">
+            <table class="dict-table">
+              <thead>
+                <tr>
+                  <th>Atributo</th>
+                  <th>Descrição / Regra de Negócio</th>
+                  <th>Tipo e Tamanho</th>
+                  <th>Constraints</th>
+                  <th>Privacidade (LGPD)</th>
+                  <th>Linhagem (Data Lineage)</th>
+                  <th>Controle de Acesso (RBAC)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>id_item_inventario</code></td>
+                  <td>Identificador único sequencial do item auditado no inventário.</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[PK]</strong> <strong>[NOT NULL]</strong> <strong>[AUTO_INCREMENT]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Gerado pelo SGBD (MySQL). Destino: Controle analítico da contagem.</td>
+                  <td>Leitura: ADMIN, OPERADOR, ESTOQUISTA. Escrita: Sistema.</td>
+                </tr>
+                <tr>
+                  <td><code>id_inventario</code></td>
+                  <td>Referência ao cabeçalho do inventário em execução.</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[FK]</strong> <strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: <code>inventario.id_inventario</code>. Destino: Agrupamento dos itens contados.</td>
+                  <td>Leitura: ADMIN, OPERADOR, ESTOQUISTA. Escrita: ADMIN, OPERADOR, ESTOQUISTA.</td>
+                </tr>
+                <tr>
+                  <td><code>id_produto</code></td>
+                  <td>Referência ao produto submetido à contagem física.</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[FK]</strong> <strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: <code>produto.id_produto</code>. Destino: Atualização de <code>produto.saldo_estoque</code> na conclusão.</td>
+                  <td>Leitura: ADMIN, OPERADOR, ESTOQUISTA. Escrita: ADMIN, OPERADOR, ESTOQUISTA.</td>
+                </tr>
+                <tr>
+                  <td><code>saldo_sistema</code></td>
+                  <td>Fotografia (snapshot) do saldo registrado em <code>produto.saldo_estoque</code> no momento do início da contagem.</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: <code>produto.saldo_estoque</code>. Destino: Base de cálculo para apuração de <code>diferenca</code>.</td>
+                  <td>Leitura: ADMIN, OPERADOR, ESTOQUISTA. Escrita: Sistema (Snapshot Automático).</td>
+                </tr>
+                <tr>
+                  <td><code>quantidade_contada</code></td>
+                  <td>Quantidade física efetivamente apurada na prateleira; deve ser maior ou igual a zero.</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Apontamento físico do estoquista (RF09). Destino: Novo <code>produto.saldo_estoque</code> após conclusão.</td>
+                  <td>Leitura: ADMIN, OPERADOR, ESTOQUISTA. Escrita: ADMIN, OPERADOR, ESTOQUISTA.</td>
+                </tr>
+                <tr>
+                  <td><code>diferenca</code></td>
+                  <td>Divergência apurada entre a contagem física e o saldo lógico (<code>quantidade_contada - saldo_sistema</code>). Pode ser positiva, negativa ou zero.</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Calculado pela aplicação/procedure (RF09). Destino: Quantidade de ajuste lançada em <code>movimentacao_estoque</code>.</td>
+                  <td>Leitura: ADMIN, OPERADOR, ESTOQUISTA. Escrita: Sistema / Procedure.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- TABELA 11: movimentacao_estoque -->
+        <section id="movimentacao_estoque" class="table-section" data-table-name="movimentacao_estoque">
+          <div class="table-section-header">
+            <div>
+              <span class="table-domain-tag">Trilha de Auditoria &amp; Kardex</span>
+              <h3>Tabela: <code>movimentacao_estoque</code></h3>
+            </div>
+            <span class="column-counter">9 atributos</span>
+          </div>
+          <p class="table-description">Livro-razão (Kardex) imutável de todas as alterações de saldo ocorridas no estoque da Amplex. Registros nunca são excluídos fisicamente (RN06, RN10, PR01).</p>
+          <div class="table-responsive">
+            <table class="dict-table">
+              <thead>
+                <tr>
+                  <th>Atributo</th>
+                  <th>Descrição / Regra de Negócio</th>
+                  <th>Tipo e Tamanho</th>
+                  <th>Constraints</th>
+                  <th>Privacidade (LGPD)</th>
+                  <th>Linhagem (Data Lineage)</th>
+                  <th>Controle de Acesso (RBAC)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>id_movimentacao</code></td>
+                  <td>Identificador único sequencial do evento de movimentação no histórico.</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[PK]</strong> <strong>[NOT NULL]</strong> <strong>[AUTO_INCREMENT]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Gerado pelo SGBD (MySQL). Destino: Ordenação cronológica do Kardex.</td>
+                  <td>Leitura: ADMIN, OPERADOR. Escrita: Sistema (Exclusivo).</td>
+                </tr>
+                <tr>
+                  <td><code>id_produto</code></td>
+                  <td>Identificador do produto cujo saldo foi alterado.</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[FK]</strong> <strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: <code>produto.id_produto</code>. Destino: Extrato histórico por produto (RF08).</td>
+                  <td>Leitura: ADMIN, OPERADOR. Escrita: Sistema (Trigger/Procedure).</td>
+                </tr>
+                <tr>
+                  <td><code>id_usuario</code></td>
+                  <td>Identificador do usuário responsável pela operação que originou a alteração de saldo (RN09, RN11).</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[FK]</strong> <strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: <code>usuario.id_usuario</code>. Destino: Auditoria de conformidade e rastreabilidade (RNF08).</td>
+                  <td>Leitura: ADMIN, OPERADOR. Escrita: Sistema (Trigger/Procedure).</td>
+                </tr>
+                <tr>
+                  <td><code>tipo</code></td>
+                  <td>Natureza da movimentação financeira/física: <code>ENTRADA</code>, <code>SAIDA</code> ou <code>AJUSTE_INVENTARIO</code> (RN06).</td>
+                  <td><code>ENUM('ENTRADA', 'SAIDA', 'AJUSTE_INVENTARIO')</code></td>
+                  <td><strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Transação de origem (RF04, RF05 ou RF09). Destino: Filtros de relatórios gerenciais (RF10).</td>
+                  <td>Leitura: ADMIN, OPERADOR. Escrita: Sistema (Trigger/Procedure).</td>
+                </tr>
+                <tr>
+                  <td><code>quantidade</code></td>
+                  <td>Volume movimentado na operação; deve ser maior que zero (RN07).</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Itens de entrada, saída ou diferença de inventário. Destino: Cálculo de giro de estoque.</td>
+                  <td>Leitura: ADMIN, OPERADOR. Escrita: Sistema (Trigger/Procedure).</td>
+                </tr>
+                <tr>
+                  <td><code>saldo_anterior</code></td>
+                  <td>Saldo físico disponível imediatamente antes da execução da transação (RN09).</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Leitura bloqueada (FOR UPDATE) de <code>produto.saldo_estoque</code>. Destino: Reconciliação contábil e auditoria.</td>
+                  <td>Leitura: ADMIN, OPERADOR. Escrita: Sistema (Trigger/Procedure).</td>
+                </tr>
+                <tr>
+                  <td><code>saldo_posterior</code></td>
+                  <td>Saldo físico resultante imediatamente após a conclusão da transação (RN09).</td>
+                  <td><code>INT</code></td>
+                  <td><strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Calculado na transação (<code>saldo_anterior +/- quantidade</code>). Destino: Prova de consistência de <code>produto.saldo_estoque</code>.</td>
+                  <td>Leitura: ADMIN, OPERADOR. Escrita: Sistema (Trigger/Procedure).</td>
+                </tr>
+                <tr>
+                  <td><code>data_hora</code></td>
+                  <td>Carimbo de data e hora exato em que a movimentação foi persistida no banco (RN09).</td>
+                  <td><code>TIMESTAMP</code></td>
+                  <td><strong>[NOT NULL]</strong> <strong>[DEFAULT CURRENT_TIMESTAMP]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Relógio do servidor MySQL. Destino: Consultas históricas por período (RF08).</td>
+                  <td>Leitura: ADMIN, OPERADOR. Escrita: Sistema (Automático).</td>
+                </tr>
+                <tr>
+                  <td><code>origem</code></td>
+                  <td>Referência textual identificando o documento ou processo gerador (ex.: <code>ENTRADA #102</code>, <code>SAIDA #45</code>, <code>INVENTARIO #03</code>).</td>
+                  <td><code>VARCHAR(100)</code></td>
+                  <td><strong>[NOT NULL]</strong></td>
+                  <td><span class="badge-lgpd badge-na">[N/A]</span></td>
+                  <td>Origem: Identificador da operação de origem (RNF08). Destino: Rastreamento reverso até o documento fiscal ou contagem.</td>
+                  <td>Leitura: ADMIN, OPERADOR. Escrita: Sistema (Trigger/Procedure).</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- MODAL 1: VISUALIZADOR DO DER COM PANZOOM -->
+  <div id="derModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="derModalTitle">
+    <div class="modal-content modal-fullscreen">
+      <div class="modal-header">
+        <h3 id="derModalTitle"><i class="fas fa-project-diagram"></i> Diagrama Entidade-Relacionamento (DER) — AMPLEX</h3>
+        <div class="der-controls">
+          <button id="zoomInBtn" class="btn-tool" title="Aumentar Zoom"><i class="fas fa-search-plus"></i> Zoom +</button>
+          <button id="zoomOutBtn" class="btn-tool" title="Diminuir Zoom"><i class="fas fa-search-minus"></i> Zoom -</button>
+          <button id="zoomResetBtn" class="btn-tool" title="Resetar Visualização"><i class="fas fa-compress-arrows-alt"></i> Reset</button>
+          <button id="closeDerModalBtn" class="btn-close-modal" aria-label="Fechar modal">&times;</button>
+        </div>
+      </div>
+      <div class="modal-body der-viewport" id="derViewport">
+        <div id="panzoomContainer" class="panzoom-container">
+          <img src="assets/DER.png" alt="Diagrama Entidade e Relacionamento do Banco de Dados AMPLEX" id="derImage">
+        </div>
+        <div class="der-hint">Use o scroll do mouse para zoom e arraste com o clique para navegar livremente.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: VISUALIZADOR DO SCRIPT DDL -->
+  <div id="ddlModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="ddlModalTitle">
+    <div class="modal-content modal-code">
+      <div class="modal-header">
+        <h3 id="ddlModalTitle"><i class="fas fa-database"></i> Script DDL Original (MySQL Workbench Forward Engineering)</h3>
+        <div class="ddl-controls">
+          <button id="copyDdlBtn" class="btn-copy"><i class="fas fa-copy"></i> Copiar DDL</button>
+          <button id="closeDdlModalBtn" class="btn-close-modal" aria-label="Fechar modal">&times;</button>
+        </div>
+      </div>
+      <div class="modal-body code-body">
+        <pre class="line-numbers"><code id="ddlCodeBlock" class="language-sql">-- AMPLEX - DDL baseado na DER do controle de estoque
+-- MySQL 8.0 / InnoDB / utf8mb4
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+CREATE SCHEMA IF NOT EXISTS `controle_estoque` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `controle_estoque`;
+
+-- -----------------------------------------------------
+-- Table `controle_estoque`.`usuario`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `controle_estoque`.`usuario` (
+  `id_usuario` INT NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(100) NOT NULL,
+  `login` VARCHAR(50) NOT NULL,
+  `senha_hash` VARCHAR(255) NOT NULL,
+  `perfil` ENUM('ADMIN', 'OPERADOR', 'ESTOQUISTA') NOT NULL,
+  `ativo` TINYINT(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id_usuario`),
+  UNIQUE INDEX `uk_usuario_login` (`login` ASC) VISIBLE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `controle_estoque`.`fornecedor`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `controle_estoque`.`fornecedor` (
+  `id_fornecedor` INT NOT NULL AUTO_INCREMENT,
+  `razao_social` VARCHAR(150) NOT NULL,
+  `nome_fantasia` VARCHAR(150) NULL DEFAULT NULL,
+  `cnpj` VARCHAR(20) NOT NULL,
+  `telefone` VARCHAR(20) NULL DEFAULT NULL,
+  `email` VARCHAR(150) NULL DEFAULT NULL,
+  `ativo` TINYINT(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id_fornecedor`),
+  UNIQUE INDEX `uk_fornecedor_cnpj` (`cnpj` ASC) VISIBLE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `controle_estoque`.`categoria`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `controle_estoque`.`categoria` (
+  `id_categoria` INT NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(100) NOT NULL,
+  `descricao` TEXT NULL DEFAULT NULL,
+  `ativo` TINYINT(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id_categoria`),
+  UNIQUE INDEX `uk_categoria_nome` (`nome` ASC) VISIBLE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `controle_estoque`.`produto`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `controle_estoque`.`produto` (
+  `id_produto` INT NOT NULL AUTO_INCREMENT,
+  `id_categoria` INT NOT NULL,
+  `sku` VARCHAR(50) NOT NULL,
+  `descricao` VARCHAR(150) NOT NULL,
+  `marca` VARCHAR(100) NULL DEFAULT NULL,
+  `unidade` VARCHAR(20) NOT NULL,
+  `preco_custo` DECIMAL(10,2) NOT NULL,
+  `preco_venda` DECIMAL(10,2) NOT NULL,
+  `saldo_estoque` INT NOT NULL DEFAULT 0,
+  `estoque_minimo` INT NOT NULL DEFAULT 0,
+  `ativo` TINYINT(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id_produto`),
+  UNIQUE INDEX `uk_produto_sku` (`sku` ASC) VISIBLE,
+  INDEX `fk_produto_categoria` (`id_categoria` ASC) VISIBLE,
+  CONSTRAINT `fk_produto_categoria`
+    FOREIGN KEY (`id_categoria`)
+    REFERENCES `controle_estoque`.`categoria` (`id_categoria`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `controle_estoque`.`entrada_estoque`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `controle_estoque`.`entrada_estoque` (
+  `id_entrada` INT NOT NULL AUTO_INCREMENT,
+  `id_fornecedor` INT NOT NULL,
+  `id_usuario` INT NOT NULL,
+  `data_entrada` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `numero_documento` VARCHAR(50) NOT NULL,
+  `situacao` ENUM('ABERTA', 'CONCLUIDA', 'CANCELADA') NOT NULL,
+  PRIMARY KEY (`id_entrada`),
+  INDEX `fk_entrada_fornecedor` (`id_fornecedor` ASC) VISIBLE,
+  INDEX `fk_entrada_usuario` (`id_usuario` ASC) VISIBLE,
+  CONSTRAINT `fk_entrada_fornecedor`
+    FOREIGN KEY (`id_fornecedor`)
+    REFERENCES `controle_estoque`.`fornecedor` (`id_fornecedor`),
+  CONSTRAINT `fk_entrada_usuario`
+    FOREIGN KEY (`id_usuario`)
+    REFERENCES `controle_estoque`.`usuario` (`id_usuario`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `controle_estoque`.`item_entrada`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `controle_estoque`.`item_entrada` (
+  `id_item_entrada` INT NOT NULL AUTO_INCREMENT,
+  `id_entrada` INT NOT NULL,
+  `id_produto` INT NOT NULL,
+  `quantidade` INT NOT NULL,
+  `custo_unitario` DECIMAL(10,2) NOT NULL,
+  PRIMARY KEY (`id_item_entrada`),
+  INDEX `fk_item_entrada_entrada` (`id_entrada` ASC) VISIBLE,
+  INDEX `fk_item_entrada_produto` (`id_produto` ASC) VISIBLE,
+  CONSTRAINT `fk_item_entrada_entrada`
+    FOREIGN KEY (`id_entrada`)
+    REFERENCES `controle_estoque`.`entrada_estoque` (`id_entrada`),
+  CONSTRAINT `fk_item_entrada_produto`
+    FOREIGN KEY (`id_produto`)
+    REFERENCES `controle_estoque`.`produto` (`id_produto`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `controle_estoque`.`saida_estoque`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `controle_estoque`.`saida_estoque` (
+  `id_saida` INT NOT NULL AUTO_INCREMENT,
+  `id_usuario` INT NOT NULL,
+  `data_saida` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `motivo` VARCHAR(255) NOT NULL,
+  `situacao` ENUM('ABERTA', 'CONCLUIDA', 'CANCELADA') NOT NULL,
+  PRIMARY KEY (`id_saida`),
+  INDEX `fk_saida_usuario` (`id_usuario` ASC) VISIBLE,
+  CONSTRAINT `fk_saida_usuario`
+    FOREIGN KEY (`id_usuario`)
+    REFERENCES `controle_estoque`.`usuario` (`id_usuario`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `controle_estoque`.`item_saida`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `controle_estoque`.`item_saida` (
+  `id_item_saida` INT NOT NULL AUTO_INCREMENT,
+  `id_saida` INT NOT NULL,
+  `id_produto` INT NOT NULL,
+  `quantidade` INT NOT NULL,
+  PRIMARY KEY (`id_item_saida`),
+  INDEX `fk_item_saida_saida` (`id_saida` ASC) VISIBLE,
+  INDEX `fk_item_saida_produto` (`id_produto` ASC) VISIBLE,
+  CONSTRAINT `fk_item_saida_saida`
+    FOREIGN KEY (`id_saida`)
+    REFERENCES `controle_estoque`.`saida_estoque` (`id_saida`),
+  CONSTRAINT `fk_item_saida_produto`
+    FOREIGN KEY (`id_produto`)
+    REFERENCES `controle_estoque`.`produto` (`id_produto`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `controle_estoque`.`inventario`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `controle_estoque`.`inventario` (
+  `id_inventario` INT NOT NULL AUTO_INCREMENT,
+  `id_usuario` INT NOT NULL,
+  `data_inventario` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `observacao` TEXT NULL DEFAULT NULL,
+  `situacao` ENUM('EM_ANDAMENTO', 'CONCLUIDO', 'CANCELADO') NOT NULL,
+  PRIMARY KEY (`id_inventario`),
+  INDEX `fk_inventario_usuario` (`id_usuario` ASC) VISIBLE,
+  CONSTRAINT `fk_inventario_usuario`
+    FOREIGN KEY (`id_usuario`)
+    REFERENCES `controle_estoque`.`usuario` (`id_usuario`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `controle_estoque`.`item_inventario`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `controle_estoque`.`item_inventario` (
+  `id_item_inventario` INT NOT NULL AUTO_INCREMENT,
+  `id_inventario` INT NOT NULL,
+  `id_produto` INT NOT NULL,
+  `saldo_sistema` INT NOT NULL,
+  `quantidade_contada` INT NOT NULL,
+  `diferenca` INT NOT NULL,
+  PRIMARY KEY (`id_item_inventario`),
+  INDEX `fk_item_inventario_inventario` (`id_inventario` ASC) VISIBLE,
+  INDEX `fk_item_inventario_produto` (`id_produto` ASC) VISIBLE,
+  CONSTRAINT `fk_item_inventario_inventario`
+    FOREIGN KEY (`id_inventario`)
+    REFERENCES `controle_estoque`.`inventario` (`id_inventario`),
+  CONSTRAINT `fk_item_inventario_produto`
+    FOREIGN KEY (`id_produto`)
+    REFERENCES `controle_estoque`.`produto` (`id_produto`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `controle_estoque`.`movimentacao_estoque`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `controle_estoque`.`movimentacao_estoque` (
+  `id_movimentacao` INT NOT NULL AUTO_INCREMENT,
+  `id_produto` INT NOT NULL,
+  `id_usuario` INT NOT NULL,
+  `tipo` ENUM('ENTRADA', 'SAIDA', 'AJUSTE_INVENTARIO') NOT NULL,
+  `quantidade` INT NOT NULL,
+  `saldo_anterior` INT NOT NULL,
+  `saldo_posterior` INT NOT NULL,
+  `data_hora` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `origem` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id_movimentacao`),
+  INDEX `fk_movimentacao_produto` (`id_produto` ASC) VISIBLE,
+  INDEX `fk_movimentacao_usuario` (`id_usuario` ASC) VISIBLE,
+  CONSTRAINT `fk_movimentacao_produto`
+    FOREIGN KEY (`id_produto`)
+    REFERENCES `controle_estoque`.`produto` (`id_produto`),
+  CONSTRAINT `fk_movimentacao_usuario`
+    FOREIGN KEY (`id_usuario`)
+    REFERENCES `controle_estoque`.`usuario` (`id_usuario`))
+ENGINE = InnoDB;
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
